@@ -1,0 +1,22 @@
+.card{
+    background-color: white;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px #ccc;
+    overflow-wrap: break-word;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pen{
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pen:hover{
+    background-color: #c0c0c0;
+}

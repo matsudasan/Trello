@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { useRecoilState  } from "recoil";
+import {ListState,Listed} from "./atom/atom"
+import { useDrag, useDrop } from "react-dnd";
+import List from "./component/List"
+import AddList from "./component/AddList"
 import './App.css';
 
-function App() {
+
+const App: React.FC = () => {
+  const [list,setList]=useRecoilState(ListState)
+  const [open, setOpen] = useState(false)
+
+  const ChangeOpen = () => {
+    setOpen(!open)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      {list.map((item: Listed, index: number) => {
+        return <List list={item} index={index} key={index} />
+      })}
+      {!open &&
+        <div className="add" onClick={ChangeOpen}>
+          <i className="fas fa-plus"></i>リストを追加
+      </div>}
+      {open && <AddList ChangeOpen={ChangeOpen} open={open} />}
     </div>
   );
 }

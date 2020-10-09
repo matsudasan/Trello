@@ -1,0 +1,21 @@
+.card-add{
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    flex-direction: column;
+}
+
+.card-add input{
+    border-radius: 5px;
+    border: none;
+    width:285px;
+    height: 40px;
+}
+.card-add .text{
+    display: flex;
+    justify-content:space-between;
+}
+.text p{
+    cursor: pointer;
+}
