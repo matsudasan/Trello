@@ -1,16 +1,18 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Carded } from "../atom/atom"
+import { TaskStated } from "../atom/atom"
+import { Draggable } from 'react-beautiful-dnd';
 import EditCard from "./EditCard"
 import "../style/Card.css"
+
 type Props = {
-    card: Carded
+    card: TaskStated
+    id: number
     index: number
-    DeleteCard:(index:number)=>void
-    Save:(index:number,content:string)=>void
+    DeleteCard: (index: number) => void
+    Save: (index: number, content: string) => void
 }
-const Card: React.FC<Props> = ({ card, index,DeleteCard,Save }) => {
-    const [carded, setCarded] = useState(card)
-    const [open, setOpen] = useState(false)
+
+const Card: React.FC<Props> = ({ card, id, index, DeleteCard, Save }) => {
     const [hidden, setHidden] = useState(false)
     const [edit, setEdit] = useState(false)
     const toggleContainer = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>
@@ -28,30 +30,55 @@ const Card: React.FC<Props> = ({ card, index,DeleteCard,Save }) => {
         }
     }
 
-    const ChangeEdit=()=>{
+    const ChangeEdit = () => {
         setEdit(!edit)
     }
 
-    const ChangeHidden=()=>{
+    const ChangeHidden = () => {
         setHidden(!hidden)
+    }
+
+    const onPen = () => {
+        ChangeEdit()
+        setHidden(false)
+    }
+
+    const onSave = (id: number, text: string) => {
+        Save(id, text)
+        window.removeEventListener('click', onClickOutsideHandler);
+        ChangeEdit()
     }
 
     let Carded
     if (edit) {
         Carded =
             <div ref={toggleContainer}>
-                <EditCard content={carded.text} ChangeEdit={ChangeEdit} ChangeHidden={ChangeHidden} DeleteCard={DeleteCard} Save={Save} index={index}/>
+                <EditCard content={card.content} ChangeEdit={ChangeEdit} ChangeHidden={ChangeHidden} DeleteCard={DeleteCard} Save={onSave} id={id} />
             </div>
+
     } else {
         Carded =
-            <div className="card" onMouseEnter={() => setHidden(true)} onMouseLeave={() => setHidden(false)}>
-                {carded.text}
-                {hidden &&
-                    <div className="pen" >
-                        <i className="fas fa-pen" onClick={()=>ChangeEdit()}></i>
+            <Draggable draggableId={String(id)} index={index} >
+                {provided => (
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                    >
+                        <div className="card"
+                            onMouseEnter={() => setHidden(true)}
+                            onMouseLeave={() => setHidden(false)}
+                        >
+                            {card.content}
+                            {hidden &&
+                                <div className="pen" >
+                                    <i className="fas fa-pen" onClick={onPen}></i>
+                                </div>
+                            }
+                        </div>
                     </div>
-                }
-            </div>
+                )}
+            </Draggable>
     }
 
     return (

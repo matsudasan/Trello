@@ -21,10 +21,14 @@
     margin-top: 0;
     border-radius: 5px;
     padding: 5px;
-    border: 1px solid black;
+    color: white;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .text .save{
-    background-color: chartreuse;
+    background-color:#3cb371 ;
 }
 .text .delete{
     background-color: red;

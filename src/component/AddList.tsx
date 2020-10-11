@@ -34,7 +34,7 @@ const AddList: React.FC<Props> = ({ ChangeOpen,open }) => {
         if(title===""){
             alert("リスト名が空白です")
         }else{
-            setList(prevState => [...prevState, { title, content: [] }])
+            setList(prevState => [...prevState, { title, tasks:[] }])
             ChangeOpen()
         }
     }

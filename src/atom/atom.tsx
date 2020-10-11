@@ -1,27 +1,32 @@
 import { atom } from 'recoil';
-
-export type Listed = {
+export type ListStated = {
     title: string
-    content: Carded[]
+    tasks: number[]
 }
-
-export type Carded = {
-    id: number
-    text: string
-}
-
-const initState:Listed[]=
-[
+const initListState: ListStated[] = [
     {
-        title:"リスト1",
-        content:[
-            {id:0,text:"カード1"}
-        ]
+        title: "リスト1",
+        tasks: [0]
     }
 ]
-
-
 export const ListState = atom({
     key: "liststate",
-    default: initState
+    default: initListState
+})
+
+export type TaskStated = {
+    id: number
+    content: string
+}
+const inittaskState: TaskStated[] = [
+    { id: 0, content: "リスト1" }
+]
+export const TaskState = atom({
+    key: "taskstate",
+    default: inittaskState
+})
+
+export const TaskNumber = atom({
+    key: "tasknumber",
+    default: 1
 })
