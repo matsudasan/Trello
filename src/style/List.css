@@ -46,6 +46,9 @@
     left: 110px;
     top: 30px;
 }
+.card-list{
+    min-height: 20px;
+}
 .add-card{
     display: flex;
     justify-content: center;

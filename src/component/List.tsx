@@ -89,6 +89,7 @@ const List: React.FC<List> = ({ list, listindex, tasks }) => {
                     <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
+                        className="card-list"
                     >
                         {tasks.map((card, index) => {
                             return (
