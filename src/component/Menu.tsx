@@ -7,9 +7,10 @@ import "../style/Menu.css"
 type Props = {
     index: number
     title: string
-    ChangeTitle:(text:string)=>void
+    ChangeTitle:(text:string,index:number)=>void
+    ChangeMenu:()=>void
 }
-const Menu: React.FC<Props> = ({ index, title,ChangeTitle }) => {
+const Menu: React.FC<Props> = ({ index, title,ChangeTitle,ChangeMenu }) => {
     const setList = useSetRecoilState(ListState)
     const [open, setOpen] = useState(false)
 
@@ -22,6 +23,7 @@ const Menu: React.FC<Props> = ({ index, title,ChangeTitle }) => {
 
     const ChangeModal=()=>{
         setOpen(!open)
+        console.log("閉じる")
     }
     return (
         <>
@@ -35,7 +37,7 @@ const Menu: React.FC<Props> = ({ index, title,ChangeTitle }) => {
                     <p>リストを削除</p>
                 </div>
             </div>
-            {open && <EditTitle ChangeModal={ChangeModal} title={title} ChangeTitle={ChangeTitle}/>}
+            {open && <EditTitle listindex={index} ChangeModal={ChangeModal} title={title} ChangeTitle={ChangeTitle} ChangeMenu={ChangeMenu}/>}
         </>
     )
 }

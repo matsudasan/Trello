@@ -1,14 +1,14 @@
-import React, { useState,useRef,useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRecoilState } from "recoil";
 import { ListState } from "../atom/atom"
 import "../style/AddList.css"
 
 type Props = {
     ChangeOpen: () => void
-    open:boolean
+    open: boolean
 }
 
-const AddList: React.FC<Props> = ({ ChangeOpen,open }) => {
+const AddList: React.FC<Props> = ({ ChangeOpen, open }) => {
     const [list, setList] = useRecoilState(ListState)
     const [title, setTitle] = useState<string>("")
     const toggleContainer = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>
@@ -20,7 +20,7 @@ const AddList: React.FC<Props> = ({ ChangeOpen,open }) => {
         }
     })
 
-    const onClickOutsideHandler = (e:any) => {
+    const onClickOutsideHandler = (e: any) => {
         if (open && !toggleContainer.current.contains(e.target)) {
             ChangeOpen()
         }
@@ -31,10 +31,10 @@ const AddList: React.FC<Props> = ({ ChangeOpen,open }) => {
     }
 
     const AddList = () => {
-        if(title===""){
+        if (title === "") {
             alert("リスト名が空白です")
-        }else{
-            setList(prevState => [...prevState, { title, tasks:[] }])
+        } else {
+            setList(prevState => [...prevState, { title, tasks: [] }])
             ChangeOpen()
         }
     }
