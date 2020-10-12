@@ -6,7 +6,7 @@ export type ListStated = {
 const initListState: ListStated[] = [
     {
         title: "リスト1",
-        tasks: [0]
+        tasks: [0, 1, 2]
     }
 ]
 export const ListState = atom({
@@ -19,7 +19,9 @@ export type TaskStated = {
     content: string
 }
 const inittaskState: TaskStated[] = [
-    { id: 0, content: "リスト1" }
+    { id: 0, content: "カード1" },
+    { id: 1, content: "カード2" },
+    { id: 2, content: "カード3" }
 ]
 export const TaskState = atom({
     key: "taskstate",
@@ -28,5 +30,5 @@ export const TaskState = atom({
 
 export const TaskNumber = atom({
     key: "tasknumber",
-    default: 1
+    default: 3
 })

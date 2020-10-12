@@ -16,17 +16,41 @@ const App: React.FC = () => {
     setOpen(!open)
   }
 
+
   const onDragEnd = (result: any) => {
-    const { destination, source, draggableID } = result;
+    const { destination, source, draggableId } = result;
 
     if (!destination) {
       return
     }
+
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return
+    }
+
+    console.log(result)
+
+    const mylist=list[source.droppableId]
+    const newTaskIds=mylist.tasks.filter((i,index)=>index!==source.index)
+    newTaskIds.splice(destination.index,0,mylist.tasks[source.index])
+    console.log(mylist)
+
+    //source.indexは持っているカードのindex
+    //source.droppableIdは移動元のリストのindex
+    //destination.droppableId移動先のリストのindex
+    //destination.indexは移動先のカードのindex
+
+    const List = JSON.parse(JSON.stringify(list))
+    List[source.droppableId].tasks=newTaskIds
+    console.log(List)
+    setList(List)
   }
+
+  console.log(list)
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable 
+      <Droppable
         droppableId="all-list"
         direction="horizontal"
         type="column"
@@ -37,8 +61,9 @@ const App: React.FC = () => {
             {...provided.droppableProps}
             className="app">
             {list.map((item: ListStated, index: number) => {
-              const tasks = task.filter(i => item.tasks.includes(i.id))
-              return <List list={item} index={index} key={index} tasks={tasks} />
+              //const tasks = task.filter(i => item.tasks.includes(i.id))
+              const tasks=item.tasks.map(taskId=>task[taskId])
+              return <List list={item} listindex={index} key={index} tasks={tasks} />
             })}
             {!open &&
               <div className="add" onClick={ChangeOpen}>

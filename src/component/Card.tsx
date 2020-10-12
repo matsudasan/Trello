@@ -1,18 +1,18 @@
 import React, { useRef, useState, useEffect } from "react";
 import { TaskStated } from "../atom/atom"
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable,Droppable } from 'react-beautiful-dnd';
 import EditCard from "./EditCard"
 import "../style/Card.css"
 
 type Props = {
     card: TaskStated
     id: number
-    index: number
+    cardindex: number
     DeleteCard: (index: number) => void
     Save: (index: number, content: string) => void
 }
 
-const Card: React.FC<Props> = ({ card, id, index, DeleteCard, Save }) => {
+const Card: React.FC<Props> = ({ card, id, cardindex, DeleteCard, Save }) => {
     const [hidden, setHidden] = useState(false)
     const [edit, setEdit] = useState(false)
     const toggleContainer = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>
@@ -58,7 +58,7 @@ const Card: React.FC<Props> = ({ card, id, index, DeleteCard, Save }) => {
 
     } else {
         Carded =
-            <Draggable draggableId={String(id)} index={index} >
+            <Draggable draggableId={String(id)} index={cardindex} >
                 {provided => (
                     <div
                         ref={provided.innerRef}

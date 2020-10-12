@@ -9,11 +9,11 @@ import { Droppable, DragDropContext, Draggable } from 'react-beautiful-dnd';
 
 type List = {
     list: ListStated
-    index: number
+    listindex: number
     tasks: TaskStated[]
 }
 
-const List: React.FC<List> = ({ list, index, tasks }) => {
+const List: React.FC<List> = ({ list, listindex, tasks }) => {
     const [tasked, setTask] = useRecoilState(TaskState)
     const [listed, setList] = useRecoilState(ListState)
     const [number, setNumber] = useRecoilState(TaskNumber)
@@ -44,7 +44,7 @@ const List: React.FC<List> = ({ list, index, tasks }) => {
         } else {
             const task = { id: number, content: text }
             const list = JSON.parse(JSON.stringify(listed))
-            list[index].tasks.push(number)
+            list[listindex].tasks.push(number)
             setList(list)
             setTask(prevState => [...prevState, task])
             setNumber(prevState => { return prevState + 1 })
@@ -69,74 +69,50 @@ const List: React.FC<List> = ({ list, index, tasks }) => {
     const ChangeTitle = (text: string) => {
     }
 
-    const onDragEnd = (result: any) => {
-        const { destination, source, draggableID } = result;
-
-        if (!destination) {
-            return
-        }
-
-        if (destination.droppableId === source.droppableId && destination.index === source.index) {
-            return
-        }
-
-        const dragtask = tasked[source.index]
-        const droptask = tasked[destination.index]
-        console.log(dragtask)
-        console.log(droptask)
-        setTask(prevState => {
-            const newitem = prevState.filter((i, index) => index !== source.index)
-            newitem.splice(destination.index, 0, dragtask)
-            return [...newitem]
-        })
-    }
-
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
-                    <div className="list">
-                        <div className="title">
-                            <h3>{list.title}</h3>
-                            <div className="menu" ref={toggleContainer}>
-                                <div className="button" onClick={() => setOpen(!open)}>
-                                    <i className="fas fa-ellipsis-h" ></i>
-                                </div>
-                                {open && (
-                                    <div className="menu-list" >
-                                        <Menu index={index} title={list.title} ChangeTitle={ChangeTitle} />
-                                    </div>
-                                )}
-                            </div>
+        <div className="list">
+            <div className="title">
+                <h3>{list.title}</h3>
+                <div className="menu" ref={toggleContainer}>
+                    <div className="button" onClick={() => setOpen(!open)}>
+                        <i className="fas fa-ellipsis-h" ></i>
+                    </div>
+                    {open && (
+                        <div className="menu-list" >
+                            <Menu index={listindex} title={list.title} ChangeTitle={ChangeTitle} />
                         </div>
-                        <Droppable droppableId={String(index)} type="task">
-                            {provided => (
-                                <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                >
-                                    {tasks.map((card, index) => {
-                                        return (
-                                            <Card
-                                                card={card}
-                                                id={card.id}
-                                                index={index}
-                                                key={card.id}
-                                                DeleteCard={DeleteCard}
-                                                Save={Save}
-                                            />
-                                        )
-                                    })}
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                        {add && <Addcard ChangeAdd={ChangeAdd} AddCard={AddCard} />}
-                        {!add &&
-                            <div className="add-card" onClick={ChangeAdd}>
-                                カードを追加
+                    )}
+                </div>
+            </div>
+            <Droppable droppableId={String(listindex)}>
+                {provided => (
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                    >
+                        {tasks.map((card, index) => {
+                            return (
+                                <Card
+                                    card={card}
+                                    id={card.id}
+                                    cardindex={index}
+                                    key={card.id}
+                                    DeleteCard={DeleteCard}
+                                    Save={Save}
+                                />
+                            )
+                        })}
+                        {provided.placeholder}
                     </div>
-                        }
+                )}
+            </Droppable>
+            {add && <Addcard ChangeAdd={ChangeAdd} AddCard={AddCard} />}
+            {!add &&
+                <div className="add-card" onClick={ChangeAdd}>
+                    カードを追加
                     </div>
-        </DragDropContext>
+            }
+        </div>
     )
 }
 
